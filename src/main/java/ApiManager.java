@@ -4,8 +4,7 @@ import com.google.gson.reflect.TypeToken;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
 
 
 import java.io.BufferedReader;
@@ -13,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.Instant;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -50,42 +50,16 @@ public class ApiManager {
         List<NameValuePair> params = new LinkedList<>();
         params.add(new BasicNameValuePair("u", uid));
         switch (apiType) {
-            case "user":
-                URL = getUserURL + "?k=" + key + "&type=" + uidType + "&" + URLEncodedUtils.format(params, "utf-8");
-                failLog = "玩家" + uid + "请求API：get_user失败五次";
-                break;
-            case "bp":
-                URL = getBPURL + "?k=" + key + "&type=" + uidType + "&limit=100&" + URLEncodedUtils.format(params, "utf-8");
-                failLog = "玩家" + uid + "请求API：get_user_best失败五次";
-                break;
+
             case "beatmap":
                 URL = getMapURL + "?k=" + key + "&b=" + bid;
-                failLog = "谱面" + bid + "请求API：get_beatmaps失败五次";
+                failLog = " 谱面" + bid + "请求API：get_beatmaps失败五次";
                 break;
             case "beatmapHash":
                 URL = getMapURL + "?k=" + key + "&h=" + hash;
-                failLog = "谱面" + bid + "请求API：get_beatmaps失败五次";
+                failLog = " 谱面" + bid + "请求API：get_beatmaps失败五次";
                 break;
-            case "recent":
-                URL = getRecentURL + "?k=" + key + "&type=" + uidType + "&limit=1&" + URLEncodedUtils.format(params, "utf-8");
-                failLog = "玩家" + uid + "请求API：get_recent失败五次";
-                break;
-            case "recents":
-                URL = getRecentURL + "?k=" + key + "&type=" + uidType + "&limit=100&" + URLEncodedUtils.format(params, "utf-8");
-                failLog = "玩家" + uid + "请求API：get_recent失败五次";
-                break;
-            case "first":
-                URL = getScoreURL + "?k=" + key + "&limit=" + rank + "&b=" + bid;
-                failLog = "谱面" + bid + "请求API：get_scores失败五次";
-                break;
-            case "score":
-                URL = getScoreURL + "?k=" + key + "&type=" + uidType + "&u=" + uid + "&b=" + bid;
-                failLog = "谱面" + bid + "请求API：get_scores失败五次";
-                break;
-            case "match":
-                URL = getMatchURL + "?k=" + key + "&mp=" + mid;
-                failLog = "谱面" + bid + "请求API：get_scores失败五次";
-                break;
+
             default:
                 System.out.println("apiType错误");
                 return null;
@@ -103,7 +77,7 @@ public class ApiManager {
                 httpConnection.setConnectTimeout((int) Math.pow(2, retry + 1) * 1000);
                 httpConnection.setReadTimeout((int) Math.pow(2, retry + 1) * 1000);
                 if (httpConnection.getResponseCode() != 200) {
-                    System.out.println("HTTP GET请求失败: " + httpConnection.getResponseCode() + "，正在重试第" + (retry + 1) + "次");
+                    System.out.println(Instant.now()+" HTTP GET请求失败: " + httpConnection.getResponseCode() + "，正在重试第" + (retry + 1) + "次");
                     retry++;
                     continue;
                 }
@@ -122,12 +96,12 @@ public class ApiManager {
                 responseBuffer.close();
                 break;
             } catch (IOException e) {
-                System.out.println("出现IO异常：" + e.getMessage() + "，正在重试第" + (retry + 1) + "次");
+                System.out.println(Instant.now()+" 出现IO异常：" + e.getMessage() + "，正在重试第" + (retry + 1) + "次");
                 retry++;
             }
         }
         if (retry == 5) {
-            System.err.println(failLog);
+            System.err.println(Instant.now()+failLog);
             return null;
         }
         return output;
