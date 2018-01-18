@@ -1,6 +1,9 @@
 # StreamBGHelper
 搭配[StreamCompanion](https://github.com/Piotrekol/StreamCompanion)使用的，实时生成缩略图BG的小程序。
 
+需要环境：JRE1.7以上（有switch String，不支持1.6以下的JRE版本）。
+运行方式：命令行java -jar xxx.jar或者直接双击（双击没有控制台界面）。
+
 打图的时候开背景暗化，看直播的人看不到BG，光有歌曲名和链接还是差了点。
 
 StreamCompanion必须安装在默认位置，当然你可以clone下来自己改，我懒得给自定义选项。
