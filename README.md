@@ -1,4 +1,8 @@
 # StreamBGHelper
+Decided to rewrite, and I'm tired of verifying config file. DEPRECATED.
+
+Studying C# and I'll write someting cooler.
+
 搭配[StreamCompanion](https://github.com/Piotrekol/StreamCompanion)使用的，实时生成缩略图BG的小程序。
 
 需要环境：JRE1.7以上（有switch String，不支持1.6以下的JRE版本）。
